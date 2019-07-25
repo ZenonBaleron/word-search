@@ -11,7 +11,7 @@
 # execution will likely result in a few dozen matches of 2-letter and 3-letter
 # words.
 #
-# A number of options can be changed. See the "COMMAND-LINE PARAMETERS'
+# A number of options can be changed. See the "COMMAND-LINE PARAMETERS"
 # section of code below for a self-explanatory 
 #
 # Output shows the grid, as well as any matches.
@@ -67,7 +67,7 @@ GetOptions(
 # validate parameter values
 
 unless (
-         $flagDirs =~ /[rcsz]/i    and
+         $flagDirs =~ /[rcsz]/i  and
          $flagDirs !~ /[^rcsz]/i and 
          length($flagDirs) > 0   and
          length($flagDirs) < 9
