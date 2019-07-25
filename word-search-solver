@@ -1,0 +1,134 @@
+#!/usr/bin/env perl
+
+#-------------------------------------------------------------------------------
+# word-search-solver
+#-------------------------------------------------------------------------------
+# This program finds words in a two-dimensional grid of letters.
+# 
+# User can just run ./word-search-solve on its own, without any arguments,
+# and it will pick generate it's own 15x15 grid based on letters observed in
+# the dictionary. The default is to search all directions. This default
+# execution will likely result in a few dozen matches of 2-letter and 3-letter
+# words.
+#
+# A number of options can be changed. See the "COMMAND-LINE PARAMETERS'
+# section of code below for a self-explanatory 
+#
+# Output shows the grid, as well as any matches.
+# Matches show the direction/dimension of the find, the coordinates of the first
+# letter in the matched word, and the word itself.
+#
+# Try this:
+# ./word-search-solver --dict test-files/digits-dictionary.txt --grid test-files/digits-grid.txt
+#
+
+#-------------------------------------------------------------------------------
+# MODULES NEEDED
+#
+
+use strict;
+use warnings;
+use feature qw(say);
+use Getopt::Long;
+use English;
+use List::Util qw(min max);
+
+# . is no longer in @INC as of perl 5.26, so we need to make it explicit
+# (we need this to include the WordSearch module below)
+use FindBin qw( $RealBin );
+use lib $RealBin;
+
+# this is where we implement most of the Word Search puzzle functions
+# (this will not work without the RealBin above)
+use WordSearch;
+
+#-------------------------------------------------------------------------------
+# COMMAND-LINE PARAMETERS
+#
+
+# start with default values
+
+my $numRows    = 15; # rows in the generated grid
+my $numCols    = 15; # cols in the generated grid
+my $flagDirs   = 'rcszRCSZ';  # see the validation function below for doc
+my $fnameDict  = 'words.txt'; # dictionary of words to look for in the grid
+my $fnameGrid  = ''; # custom grid file (useful for tests)
+
+# get override values from named command-line arguments
+
+GetOptions(
+  "rows=i"       => \$numRows,
+  "columns=i"    => \$numCols,
+  "directions=s" => \$flagDirs,
+  "dictionary=s" => \$fnameDict,
+  "grid=s"       => \$fnameGrid,
+) or die("Error while processing command line arguments.\n");
+
+# validate parameter values
+
+unless (
+         $flagDirs =~ /[rcsz]/i    and
+         $flagDirs !~ /[^rcsz]/i and 
+         length($flagDirs) > 0   and
+         length($flagDirs) < 9
+) {
+
+  say <<'HEREDOC';
+[!!!] Invalid value of parameter --directions [!!!]
+This parameter lists all directions/dimensions in which the puzzle grid
+will be searched.
+Valid string consists of 1-8 characters, drawn from:
+r - rows        searched in the forward direction (left to right)
+c - columns     searched in the forward direction (top to bottom)
+s - \ diagonals searched in the forward direction (left to right)
+z - / diagonals searched in the forward direction (left to right)
+R - rows        searched in the reverse direction (right to left)
+C - columns     searched in the reverse direction (bottom to top)
+S - \ diagonals searched in the reverse direction (right to left)
+Z - / diagonals searched in the reverse direction (right to left)
+Examples: --directions rc
+          --directions rcRC
+Default:  --directions rcszRCSZ (i.e. all)
+HEREDOC
+
+  exit(1);
+
+}
+
+# TODO: validate and document other parameter values
+
+#-------------------------------------------------------------------------------
+# DICTIONARY
+#
+
+readDictionaryFromFile($fnameDict);
+
+#-------------------------------------------------------------------------------
+# PUZZLE GRID
+#
+
+# the grid can come either from a pre-generated file, or be randomly generated
+if ($fnameGrid) {
+  readGridFromFile($fnameGrid);
+}
+else {
+  generateGrid($numRows, $numCols, $fnameDict);
+}
+
+printGrid();
+
+# the grid matrix is converted to strings of rows, columns, diagonals,
+# and their reverse versions, depending on the --directions parameter value
+foreach my $d (split //, $flagDirs) {
+  flattenGridDirection($d);
+}
+
+#-------------------------------------------------------------------------------
+# EXAMINATION
+#
+
+foreach my $d (split //, $flagDirs) {
+  examineGridDirection($d);
+}
+
+
