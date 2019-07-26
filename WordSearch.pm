@@ -106,7 +106,7 @@ sub readGridFromFile {
   open(my $fileHandle, "<", $fnameGrid) || die "Can't open $fnameGrid: $!";
 
   my $rowCurrent = 0;
-  my $rowLength = 0;
+
   while (<$fileHandle>) {
     chomp;
     my @rowLetters = split('', $_);
