@@ -21,12 +21,12 @@ use WordSearch;
 
 #-------------------------------------------------------------------------------
 
-readLettersFromDictionary('test-files/words-digits.txt');
+readLettersFromDictionary('test-files/digits-dictionary.txt');
 
 is(
   join('', @WordSearch::letters),
   'efghinorstuvwxz',
-  'readLettersFromDictionary words-digits.txt'
+  'readLettersFromDictionary digits-dictionary.txt'
 );
 
 #-------------------------------------------------------------------------------
