@@ -37,6 +37,8 @@ use List::Util qw(min max);
 #
 # the 'our' vars are available in any script that includes 'use WordSearch;'
 # as long as thety are exported through @EXPORT
+# If not in @EXPORT, can still access by explicitly stating the namespace,
+# for example $WordSearch::gridMatrix
 #
 
 # ref to Array of Arrays representing the 2D puzzle grid of letters
