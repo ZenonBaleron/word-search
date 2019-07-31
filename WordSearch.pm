@@ -326,7 +326,7 @@ sub recordThisExcitingFind {
   }
   elsif ($d eq 'Z') { # [/] right to left, top to bottom
     $reportLine .= '/ r2l]';
-    $reportLine .= sprintf(" (%2i,%2i) ", $r+$offset, $c+-$offset);
+    $reportLine .= sprintf(" (%2i,%2i) ", $r+$offset, $c-$offset);
   }
 
   $reportLine .= $substring;
