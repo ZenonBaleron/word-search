@@ -287,6 +287,8 @@ sub examineString {
   }
 }
 
+# the coordinate / offset logic found in this subroutine
+# reflects the logic in flattenGridDirection()
 sub recordThisExcitingFind {
 
   my ($str,$d,$substring,$offset) = @_;
