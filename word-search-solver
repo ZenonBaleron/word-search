@@ -7,18 +7,25 @@
 # 
 # User can just run ./word-search-solve on its own, without any arguments,
 # and it will generate it's own 15x15 grid based on letters observed in
-# the dictionary words.txt, and search it all directions. This default
+# the dictionary words.txt, and search it in all directions. This default
 # execution will likely result in a few dozen matches of 2-letter and 3-letter
-# words (randomly generating a long word in the grid is unlikely).
+# words (because randomly generating a longer word in the grid is unlikely).
 #
 # A number of options can be changed. See the "COMMAND-LINE PARAMETERS"
 # section of code below for a self-explanatory explanation of the option set.
 #
-# Output shows the grid, as well as any matches.
-# Matches show the direction/dimension of the find, the coordinates
-# of the first letter in the matched word, and the word itself.
+# Output shows the grid, as well as any words matched from the dictionary.
 #
-# Try this:
+# Matches show:
+# - the direction/dimension of the matched word (one of {c,C,r,R,s,S,z,Z})
+# - the coordinates of the first letter in the matched word
+# - the word itself.
+# For example:
+# [S \ r2l] ( 4, 9) four
+# indicates the word "four", starting with "f" at (r,c)=(4,9) (zero-offset),
+# on a diagonal in the right-to-left bottom-to-top direction.
+#
+# Try this example to understand various possible matches and their outputs:
 # ./word-search-solver --dict test-files/digits-dictionary.txt \
 #                      --grid test-files/digits-grid.txt
 #
